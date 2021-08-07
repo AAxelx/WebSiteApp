@@ -1,0 +1,55 @@
+﻿@model GetCartResponse
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>Cart</h1>
+@if(Model?.CartProducts == null || Model.CartProducts.ToList().Count == 0)
+{
+    <a>Add a product to your cart to see it here and place your order</a>
+}
+else
+{
+    <a class="btn btn-info btn-sm" onclick="createOrderAndClearCartJs();" href="/Order/GetByPage?page=1">Create order</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CartProducts.ToList()[0].Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CartProducts.ToList()[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CartProducts.ToList()[0].Price) UAH
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartProducts)
+            {
+                <tr>
+                    <td>
+                          @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                          @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                          @Html.DisplayFor(modelItem => item.Price) $
+                    </td>
+                    <td>
+                        <form method="post">
+                            <button class="btn btn-info btn-sm" onclick="deleteFromCartJs('@item.Id');">-</button>
+                            @Html.DisplayFor(modelItem => item.Count)
+                            <button class="btn btn-info btn-sm" onclick="addToCartJs('@item.Id', '@item.Name', '@item.Description', @item.Price, '@item.Type');">+</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

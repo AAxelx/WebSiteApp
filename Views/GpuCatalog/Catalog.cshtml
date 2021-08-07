@@ -1,0 +1,76 @@
+﻿@model GpuCatalogViewModel
+
+@{
+    ViewData["Title"] = "Gpus";
+    int pages = (int)Math.Ceiling(Model.TotalRecords / (double)Model.PageSize);
+    int page = Model.CurrentPage;
+}
+<h1>Cpus</h1>
+
+<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Sort by...
+</button>
+<div class="dropdown-menu">
+    <a class="dropdown-item" href="/GameCatalog/Catalog?page=1&sortedType=@SortedTypeEnum.CreateDateAscending">Creation date ⇧</a>
+    <a class="dropdown-item" href="/GameCatalog/Catalog?page=1&sortedType=@SortedTypeEnum.CreateDateDescending">Creation date ⇩</a>
+    <a class="dropdown-item" href="/GameCatalog/Catalog?page=1&sortedType=@SortedTypeEnum.PriceAscending">Price ⇧</a>
+    <a class="dropdown-item" href="/GameCatalog/Catalog?page=1&sortedType=@SortedTypeEnum.PriceDescending">Price ⇩</a>
+</div>
+
+@for (var i = 0; i < Model.Gpus.Count();)
+{
+    <div class="card-deck">
+        @for (var j = 0; j < 3; j++, i++)
+        {
+            @if (i >= Model.Gpus.Count())
+            {
+                <div class="card text-center" style="border: none">
+                </div>
+            }
+            else
+            {
+                <div class="card text-center">
+                    <img src="http://" class="card-img-top" alt="..." />
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Gpus.ToList()[i].Name</h5>
+                        <p class="card-text">@Model.Gpus.ToList()[i].Description</p>
+                        <a href="/CpuCatalog/GetById?id=@Model.Gpus.ToList()[i].Id&page=@Model.CurrentPage&sortedType" class="btn btn-primary" style="font-size: 20px;">Details</a>
+                        <p></p>
+                        <div class="badge badge-primary text-wrap" style="font-size: 20px;">
+                            @Model.Gpus.ToList()[i].Price $
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <form method="post">
+                                    <a class="btn btn-info btn-sm" onclick="addToCartJs('@Model.Gpus.ToList()[i].Id', '@ProductTypeEnum.Gpu');"></a>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
+
+<ul class="pagination">
+    @if (page != 1)
+    {
+        <li class="page-item">
+            <a class="page-link" href="/GameCatalog/Catalog?page=@(page - 1)&sortedType=@Model.SortedType" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+    }
+    @for (int i = 1; i < pages + 1; i++)
+    {
+        <li class="page-item"><a class="page-link" href="/GameCatalog/Catalog?page=@i&sortedType=@Model.SortedType">@i</a></li>
+}
+    @if (page != pages)
+    {
+        <li>
+            <a class="page-link" href="/GameCatalog/Catalog?page=@(page + 1)&sortedType=@Model.SortedType" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    }
+</ul>

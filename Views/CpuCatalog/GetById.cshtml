@@ -1,0 +1,24 @@
+﻿@model CpuViewModel
+
+@{ 
+    ViewData["Title"] = $"{Model.Cpu.Name}";
+}
+<div class="card-deck">
+    <div class="card text-center" style="border: none">
+    </div>
+    <div class="card text-center" style="border: none">
+        <img src="http://" class="card-img-top" alt="..." />
+        <div class="card-body">
+            <h5 class="card-title">@Model.Cpu.Name</h5>
+            <a class="card-text" style="font-size: 10px">@Model.Cpu.Manufacturer</a>
+            <a class="card-text" style="font-size: 10px">@Model.Cpu.Cores</a>
+            <a class="card-text" style="font-size: 10px">@Model.Cpu.HyperThreading</a>
+            <a class="card-text" style="font-size: 10px">@Model.Cpu.Generation</a>
+            <p class="card-text">@Model.Cpu.Description</p>
+            <p class="card-text">Presented: @Model.Cpu.Presented</p>
+            <a href="/GameCatalog/Catalog?Page=@Model.Page&sortedType=@Model.SortedType" class="btn btn-primary" style="font-size: 20px;">Back</a>
+        </div>
+        <div class="card text-center" style="border: none">
+        </div>
+    </div>
+</div>
